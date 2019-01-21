@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <title>Title</title>
+    
+</head>
+<body>
+
+
+<div id="comment-list"> </div>
+<div id="reply"></div>
+
+<form id = "form" >
+    Name:
+    <input name="nikeName">
+    Title:
+    <input name = "title"><br>
+    Comment:<br>
+    <textarea name="content"> </textarea><br>
+    ParentId:<br>
+    <input name="parentId" value="0"> <br>
+    <input id="sub" value="submit" type="button" name="main"  >
+</form>
+
+</body>
+
+<script type="text/javascript">
+    var btnId;
+    var replyList="";
+
+    $.get("http://localhost:8080/getComment",
+        function (data) {
+        getComment(data);
+        $("#comment-list").append(replyList);
+
+        })
+
+
+
+
+
+
+
+    function getId(thisId){
+        btnId=thisId;
+        window.open("/inisVisaApplication/templates/addComment.html?id="+btnId)
+    }
+
+
+    function getComment(data){
+        if(data.length >0){
+            //console.log(data);
+            for(var i=0; i<data.length;i++){//获得一级评论
+                console.log(data[i]);
+                replyList += "<ul>"
+                replyList += "<li class='replyLi'>" + data[i].content + "&nbsp;&nbsp;&nbsp;<a class='replyBtn' id='btn"+data[i].id+"' href='#' onclick='getId(this.id)'>reply</a>"
+                if(data[i].childCommentList){
+
+                    getComment(data[i].childCommentList)//递归显示各级评论
+
+                }
+                replyList += "</li>"
+
+
+                replyList += "</ul>"
+            }
+        }
+    }
+
+
+
+    $("#sub").click(function a() {
+        //把序列化的值传给ajax()作为url的参数，轻松使用ajax()提交form表单了，而不需要一个一个获取表单中的值然后传给ajax()
+        var postData=$("#form").serialize();
+
+        $.post(
+            "http://localhost:8080/addComment",
+            postData
+            );
+        window.location.reload();
+    })
+
+
+</script>
+
+
+
+
+</html>

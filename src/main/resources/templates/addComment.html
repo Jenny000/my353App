@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <!--<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+
+<p id="reply">
+
+
+
+</p>
+
+<form id = "form" >
+    Name:
+    <input name="nikeName">
+    Title:
+    <input name = "title"><br>
+    Comment:<br>
+    <input name="content"> <br>
+    parent Id:
+    <input name="parentId" id="parentId"><br>
+    create time:
+    <input name="createTime" id = "createTime"><br>
+    <input id="sub" value="submit" type="button" name="main"  >
+
+</form>
+
+
+
+</body>
+
+<script type="text/javascript">
+    var parentId;
+
+    function getParentReplyId(){
+
+        var url=window.location.search;//获取url中"?"符后的字串
+        if(url.indexOf("?")!=-1){
+            parentId=url.substr(url.indexOf("n")+1);
+        }
+        return parentId;
+    }
+    $("#parentId").attr("value",getParentReplyId());
+
+
+
+    $("#sub").click(function a() {
+        $("#createTime").val(new Date());
+        //把序列化的值传给ajax()作为url的参数，轻松使用ajax()提交form表单了，而不需要一个一个获取表单中的值然后传给ajax()
+        var postData=$("#form").serialize();
+
+        $.post(
+            "http://localhost:8080/addComment",
+            postData,
+            function(data) {//回传函数
+
+        });
+        window.location.href ="/inisVisaApplication/templates/main.html";
+    })
+
+</script>
+
+</html>
+

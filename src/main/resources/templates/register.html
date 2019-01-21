@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <title>Register</title>
+</head>
+<body>
+
+<form id = "register" enctype="multipart/form-data">
+    Email:
+    <input name="email"><br>
+    Password:
+    <input name = "password"><br>
+    User Name:
+    <input name="userName"><br>
+    Date of Birth:
+    <input name="dob"> <br>
+    Image:
+    <img id="preview">
+    <input type="text" id="imgfield" class="txt" placeholder="Preview">
+    <input type="file" name="image" accept="image/gif,image/jpeg,image/jpg,image/png,image/svg"> <br>
+    <input id="sub" value="submit" type="button" name="main">
+</form>
+
+
+<script type="text/javascript">
+
+    $("#sub").click(function a() {
+
+        var postData=$("#register").serialize();
+
+        $.post(
+            "http://localhost:8080/saveUser",
+            postData
+        )
+
+    })
+
+
+
+</script>
+
+</body>
+</html>
